@@ -20,7 +20,6 @@ Elixir
 + Get help in `iex`:
    + `h <module_name>` to get help, e.g. `h Map`
    + `h <func>` to get information about the function, e.g. `h Map.keys/1`
-   + `:observer.start` to start the ErlangVM' observer app
 
 
 ## Syntax
@@ -28,4 +27,6 @@ Elixir
 + `Process.sleep(10)` to put the process to sleep for 10 millisec
 + `pid = spawn(ModuleName, :method, [])` to spawn a new process
 + `send pid, message` to send `message` to the process
-+ ​
++ `flush` to flush all message to shell
++ `:observer.start` to start the ErlangVM' observer app
++ `IEx.Helpers.recompile` to reload code from inside `iex`
