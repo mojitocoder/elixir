@@ -37,6 +37,7 @@ Elixir
 + `Process.info(self, :links)` to find all processes linked to the current one
 + `Process.link(pid)` to link the current process to the `pid` one
 + `Process.alive?(pid)` whether a process is still alive
++ `Process.flag(:trap_exit, true)` to trap the exit signals from the current process
 
 ## Ring project - Chapter 5
 
@@ -58,3 +59,17 @@ Trapping exits:
 + `flush`: To see the crash message the current process receive
 + Note that the current process still survice after the crash
 
+3 ways for a process to terminate:
+
++ Naturally, no more code to run
+
+   + `pid = spawn(fn -> receive do :ok -> :ok end end)`: a process to wait for only one message
+   + `Process.link(pid)`
+   + `send(pid, :ok)`: execute the code
+   + `flush`: to see the message on the shell
++ Forcefully terminated
+   + `Process.flag(:trap_exit, true)`: trap the exit signals
+   + `Process.exit(self, :whoops)`: raise exit signal
+   + `flush`: to see the exit signal was trapped
+   + `Process.exit(self, **:kill**)`: send an **untrappable** signal, the shell will be crashed
++ Exception on a process, per the previous example
