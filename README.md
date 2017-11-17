@@ -20,6 +20,7 @@ Elixir
 + Get help in `iex`:
    + `h <module_name>` to get help, e.g. `h Map`
    + `h <func>` to get information about the function, e.g. `h Map.keys/1`
+   + `i variable_name` to get information about that variable 
 
 
 ## Syntax
@@ -73,3 +74,25 @@ Trapping exits:
    + `flush`: to see the exit signal was trapped
    + `Process.exit(self, **:kill**)`: send an **untrappable** signal, the shell will be crashed
 + Exception on a process, per the previous example
+
+## Data types
+
+Elixir support the following data types:
++ Value types
+   + Integer
+   + Float
+   + Atom
+   + Range
+   + Regex
++ System types
+   + PID and port
+   + Reference 
++ Collection types
+   + Tuple
+   + List
+   + Maps
+   + Binaries
+
+**Utilities:**
++ `i` command in `iex`: Print out information about a variable
++ ​
