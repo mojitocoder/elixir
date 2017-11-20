@@ -72,13 +72,30 @@ defmodule ProteinTranslation do
   end
 
   def of_rna(strand) do
-
+    case of_rna(strand, []) do
+      :error ->
+        { :error, "invalid RNA" }
+      accumulator ->
+        { :ok, accumulator }
+    end
   end
 
-  # def of_rna(strand, accumulator) do
-  #   rna = String.slice(strand, 0..2)
-  #   { :ok, codon } = of_codon(rna)
-  #   of_rna(String.slice(strand, 3..-1), )
-  # end
+  def of_rna(strand, accumulator) do
+    rna = String.slice(strand, 0..2)
 
+    case of_codon(rna) do
+      { :ok, codon } ->
+        if codon == "STOP" do
+          accumulator
+        else
+          if String.length(strand) > 3 do
+            of_rna(String.slice(strand, 3..-1), accumulator ++ [codon])
+          else
+            accumulator ++ [codon]
+          end
+        end
+      { :error, _ } ->
+        :error
+    end
+  end
 end
