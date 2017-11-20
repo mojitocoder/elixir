@@ -4,13 +4,20 @@ defmodule SecretHandshake do
     ["wink"]
   end
 
-  def unwind(val, accumulator) when div(val, 8) == 1 do
-    unwind(rem(val, 8), accumulator)
-    accumulator = "jump" ++ accumulator
+  def unwind(n, accumulator) when div(n, 8) == 1 do
+    val = ["jump"]
+    if rem(n, 8) == 0 do
+      val = val ++ unwind(rem(n, 8), accumulator)
+    end
+    val
+  end
+
+  def unwind(n, accumulator) when div(val, 4) == 1 do
+    "close your eyes" ++ unwind(rem(n, 4), accumulator)
   end
 
   def unwind(n, accumulator) when div(n, 2) == 1 do
-    "double blink" ++ accumulator
+    "double blink" ++ unwind(rem(n, 2), accumulator)
   end
 
   def unwind(n, accumulator) when n == 1 do
