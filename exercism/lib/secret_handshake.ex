@@ -1,26 +1,37 @@
 defmodule SecretHandshake do
-  def commands(val) do
-    if div(val, 8) == 1
+  def commands(n) when div(n, 16) >= 1 do
+    Enum.reverse(commands(rem(n, 16)))
+  end
+
+  def commands(n) when div(n, 8) == 1 do
+    if rem(n, 8) == 0 do
+      ["jump"]
+    else
+      commands(rem(n, 8)) ++ ["jump"]
+    end
+  end
+
+  def commands(n) when div(n, 4) == 1 do
+    if rem(n, 4) == 0 do
+      ["close your eyes"]
+    else
+      commands(rem(n, 4)) ++ ["close your eyes"]
+    end
+  end
+
+  def commands(n) when div(n, 2) == 1 do
+    if rem(n, 2) == 0 do
+      ["double blink"]
+    else
+      commands(rem(n, 2)) ++ ["double blink"]
+    end
+  end
+
+  def commands(n) when n == 1 do
     ["wink"]
   end
 
-  def unwind(n, accumulator) when div(n, 8) == 1 do
-    val = ["jump"]
-    if rem(n, 8) == 0 do
-      val = val ++ unwind(rem(n, 8), accumulator)
-    end
-    val
-  end
-
-  def unwind(n, accumulator) when div(val, 4) == 1 do
-    "close your eyes" ++ unwind(rem(n, 4), accumulator)
-  end
-
-  def unwind(n, accumulator) when div(n, 2) == 1 do
-    "double blink" ++ unwind(rem(n, 2), accumulator)
-  end
-
-  def unwind(n, accumulator) when n == 1 do
-    "wink" ++ accumulator
+  def commands(n) when n == 0 do
+    []
   end
 end
