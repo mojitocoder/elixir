@@ -10,7 +10,7 @@ defmodule Acronym do
 
   def extract(word) do
     word
-      |> String.to_charlist
+      |> String.graphemes
       |> Enum.with_index
       |> Enum.filter(fn {char, index} -> index == 0 || is_capital(char) end) # first or capital letters only
       |> Enum.map(fn {char, _} -> char end)
@@ -18,6 +18,6 @@ defmodule Acronym do
   end
 
   def is_capital(char) do
-    List.to_string([char]) =~ ~r/^\p{Lu}$/u
+    char =~ ~r/^\p{Lu}$/u
   end
 end

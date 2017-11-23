@@ -1,8 +1,13 @@
 defmodule RotationalCipher do
   def rotate(plaintext, shift) do
-    charlist = String.to_charlist(plaintext)
-    shifted = Enum.map(charlist, fn(char) -> shift(char, shift) end)
-    List.to_string(shifted)
+    # charlist = String.to_charlist(plaintext)
+    # shifted = Enum.map(charlist, fn(char) -> shift(char, shift) end)
+    # List.to_string(shifted)
+
+    plaintext
+      |> String.to_charlist
+      |> Enum.map(fn(char) -> shift(char, shift) end)
+      |> List.to_string
   end
 
   def shift(char, shift) do
