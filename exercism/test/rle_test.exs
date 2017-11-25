@@ -5,7 +5,7 @@ defmodule RunLengthEncoderTest do
     assert RunLengthEncoder.encode("") === ""
   end
 
-  # @tag :pending
+  @tag :pending
   test "encode single characters only are encoded without count" do
     assert RunLengthEncoder.encode("XYZ") === "XYZ"
   end
