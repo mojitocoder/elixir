@@ -12,39 +12,31 @@ defmodule Sublist do
   end
 
   def compare(a, b) do
-    IO.puts "compare"
-    if is_equal?(a, b) do
-      :equal
-    else
-      cond do
-        Enum.count(a) < Enum.count(b) ->
-          if is_sub?(a, b), do: :sublist, else: :unequal
-        Enum.count(a) > Enum.count(b) ->
-          if is_sub?(b, a), do: :superlist, else: :unequal
-        Enum.count(a) == Enum.count(b) ->
-          :unequal
-      end
+    cond do
+      is_equal?(a, b) ->
+        :equal
+      Enum.count(a) < Enum.count(b) ->
+        if is_sub?(a, b), do: :sublist, else: :unequal
+      Enum.count(a) > Enum.count(b) ->
+        if is_sub?(b, a), do: :superlist, else: :unequal
+      Enum.count(a) == Enum.count(b) ->
+        :unequal
     end
   end
 
   def is_sub?(a, b) do
-    if Enum.count(a) > Enum.count(b) do
-      false
-    else
-      if is_sub?(a, b, :length_checked) do
+    cond do
+      Enum.count(a) > Enum.count(b) ->
+        false
+      is_sub?(a, b, :length_checked) ->
         true
-      else
+      true ->
         is_sub?(a, tl(b))
-      end
     end
   end
 
   def is_sub?([a_head | a_tail], [b_head | b_tail], _) do
-    if a_head === b_head do
-      is_sub?(a_tail, b_tail, :length_checked)
-    else
-      false
-    end
+    a_head === b_head && is_sub?(a_tail, b_tail, :length_checked)
   end
 
   def is_sub?([], _, _) do
