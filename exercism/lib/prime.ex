@@ -1,5 +1,4 @@
 defmodule Prime do
-
   def nth(0), do: raise ArgumentError, message: "Invalid argument n"
 
   def nth(1), do: 2
@@ -10,14 +9,13 @@ defmodule Prime do
   end
 
   def nth(n, max, primes) do
-    if Enum.count(primes) == n do
-      primes
-    else
-      if is_prime?(max) do
+    cond do
+      Enum.count(primes) == n ->
+        primes
+      is_prime?(max) ->
         nth(n, max + 1, [max] ++ primes)
-      else
+      true ->
         nth(n, max + 1, primes)
-      end
     end
   end
 
