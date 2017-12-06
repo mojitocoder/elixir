@@ -1,5 +1,5 @@
 defmodule Prime do
-  def nth(0), do: raise ArgumentError, message: "Invalid argument n"
+  def nth(0), do: raise ArgumentError, message: "Invalid argument n = 0"
 
   def nth(1), do: 2
 
