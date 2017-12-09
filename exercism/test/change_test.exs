@@ -22,7 +22,7 @@ defmodule ChangeTest do
     assert Change.generate(coins, 23) == {:ok, expected}
   end
 
-  # @tag :pending
+  @tag :pending
   test "change with Lower Elbonia Coins" do
     coins = [1, 5, 10, 21, 25]
     expected = [21, 21, 21]
