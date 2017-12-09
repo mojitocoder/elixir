@@ -8,7 +8,7 @@ defmodule ChangeTest do
     assert Change.generate(coins, 25) == {:ok, expected}
   end
 
-  @tag :pending
+  # @tag :pending
   test "multiple coin change" do
     coins = [1, 5, 10, 25, 100]
     expected = [5, 10]
@@ -22,21 +22,21 @@ defmodule ChangeTest do
     assert Change.generate(coins, 23) == {:ok, expected}
   end
 
-  @tag :pending
+  # @tag :pending
   test "change with Lower Elbonia Coins" do
     coins = [1, 5, 10, 21, 25]
     expected = [21, 21, 21]
     assert Change.generate(coins, 63) == {:ok, expected}
   end
 
-  @tag :pending
+  # @tag :pending
   test "large target values" do
     coins = [1, 2, 5, 10, 20, 50, 100]
     expected = [2, 2, 5, 20, 20, 50, 100, 100, 100, 100, 100, 100, 100, 100, 100]
     assert Change.generate(coins, 999) == {:ok, expected}
   end
 
-  @tag :pending
+  # @tag :pending
   test "possible change without unit coins available" do
     coins = [2, 5, 10, 20, 50]
     expected = [2, 2, 2, 5, 10]
