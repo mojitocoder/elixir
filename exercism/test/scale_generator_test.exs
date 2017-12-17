@@ -196,17 +196,17 @@ defmodule ScaleGeneratorTest do
   end
 
   describe "generate scale from tonic and pattern" do
-    @tag :pending
+    # @tag :pending
     test "C Major scale" do
       assert ScaleGenerator.scale("C", @major_scale_pattern) == ~w(C D E F G A B C)
     end
 
-    @tag :pending
+    # @tag :pending
     test "G Major scale" do
       assert ScaleGenerator.scale("G", @major_scale_pattern) == ~w(G A B C D E F# G)
     end
 
-    @tag :pending
+    # @tag :pending
     test "f# minor scale" do
       assert ScaleGenerator.scale("f#", @minor_scale_pattern) == ~w(F# G# A B C# D E F#)
     end

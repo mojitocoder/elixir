@@ -1,3 +1,4 @@
+require IEx
 defmodule ScaleGenerator do
   @scale ~w(A A# B C C# D D# E F F# G G#)
   @flat_scale ~w(A Bb B C Db D Eb E F Gb G Ab)
@@ -11,7 +12,7 @@ defmodule ScaleGenerator do
               "A" -> 3
             end
 
-    scale |> Enum.at(post + delta)
+    scale |> Stream.cycle |> Enum.at(post + delta)
   end
 
   def chromatic_scale(pitch) do
@@ -32,11 +33,20 @@ defmodule ScaleGenerator do
     end
   end
 
+  def scale(pitch, pattern) do
+    pattern |> String.graphemes
+            |> Enum.reduce([pitch], fn (interval, acc) ->
+                                      IEx.pry()
+                                      acc ++ [step(@scale, List.last(acc), interval)]
+                                    end)
+  end
+
   defp generate_scale(scale, pitch) do
     post = find_position(scale, pitch)
 
-    Enum.concat(scale, scale)
-      |> Enum.slice(post, 13)
+    # Enum.concat(scale, scale)
+    scale |> Stream.cycle
+          |> Enum.slice(post, 13)
   end
 
   defp find_position(scale, pitch) do
