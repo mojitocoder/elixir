@@ -1,7 +1,9 @@
 defmodule Frequency do
-  def frequency(texts, _) do
+  def frequency(texts, workers) do
     texts
-      |> Enum.map(fn text -> frequency(text) end)
+      # |> Task.async_stream(fn text -> frequency(text) end)
+      |> Task.async_stream(Frequency, :frequency, [], max_concurrency: workers)
+      |> Enum.map(fn {:ok, ls} -> ls end)
       |> List.flatten
       |> Enum.group_by(&(elem(&1,0)), &(elem(&1,1)))
       |> Enum.map(fn {k, v} -> {k, Enum.sum(v)} end)
