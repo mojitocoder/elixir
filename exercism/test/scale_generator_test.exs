@@ -211,62 +211,62 @@ defmodule ScaleGeneratorTest do
       assert ScaleGenerator.scale("f#", @minor_scale_pattern) == ~w(F# G# A B C# D E F#)
     end
 
-    @tag :pending
+    # @tag :pending
     test "b flat minor scale" do
       assert ScaleGenerator.scale("bb", @minor_scale_pattern) == ~w(Bb C Db Eb F Gb Ab Bb)
     end
 
-    @tag :pending
+    # @tag :pending
     test "D Dorian scale" do
       assert ScaleGenerator.scale("d", @dorian_scale_pattern) == ~w(D E F G A B C D)
     end
 
-    @tag :pending
+    # @tag :pending
     test "E flat Mixolydian scale" do
       assert ScaleGenerator.scale("Eb", @mixolydian_scale_pattern) == ~w(Eb F G Ab Bb C Db Eb)
     end
 
-    @tag :pending
+    # @tag :pending
     test "a Lydian scale" do
       assert ScaleGenerator.scale("a", @lydian_scale_pattern) == ~w(A B C# D# E F# G# A)
     end
 
-    @tag :pending
+    # @tag :pending
     test "e Phrygian scale" do
       assert ScaleGenerator.scale("e", @phrygian_scale_pattern) == ~w(E F G A B C D E)
     end
 
-    @tag :pending
+    # @tag :pending
     test "g Locrian scale" do
       assert ScaleGenerator.scale("g", @locrian_scale_pattern) == ~w(G Ab Bb C Db Eb F G)
     end
 
-    @tag :pending
+    # @tag :pending
     test "d Harmonic minor scale" do
       assert ScaleGenerator.scale("d", @harmonic_minor_scale_pattern) == ~w(D E F G A Bb Db D)
     end
 
-    @tag :pending
+    # @tag :pending
     test "C Melodic minor scale" do
       assert ScaleGenerator.scale("C", @melodic_minor_scale_pattern) == ~w(C D D# F G A B C)
     end
 
-    @tag :pending
+    # @tag :pending
     test "C Octatonic scale" do
       assert ScaleGenerator.scale("C", @octatonic_scale_pattern) == ~w(C D D# F F# G# A B C)
     end
 
-    @tag :pending
+    # @tag :pending
     test "D flat Hexatonic scale" do
       assert ScaleGenerator.scale("Db", @hexatonic_scale_pattern) == ~w(Db Eb F G A B Db)
     end
 
-    @tag :pending
+    # @tag :pending
     test "A Pentatonic scale" do
       assert ScaleGenerator.scale("A", @pentatonic_scale_pattern) == ~w(A B C# E F# A)
     end
 
-    @tag :pending
+    # @tag :pending
     test "G Enigmatic scale" do
       assert ScaleGenerator.scale("G", @enigmatic_scale_pattern) == ~w(G G# B C# D# F F# G)
     end
