@@ -30,7 +30,6 @@ defmodule ScaleGenerator do
       |> String.graphemes
       |> Enum.reduce([find_correct_pitch(scale, pitch)],
                      fn (interval, acc) ->
-                       # IEx.pry()
                        acc ++ [step(scale, List.last(acc), interval)]
                      end)
   end
