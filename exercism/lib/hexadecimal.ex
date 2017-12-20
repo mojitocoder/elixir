@@ -1,13 +1,13 @@
 defmodule Hexadecimal do
   def to_decimal(input) do
-    len = input |> String.length
     try do
       input
         |> String.downcase
         |> String.graphemes
         |> Enum.map(&to_num(&1))
+        |> Enum.reverse
         |> Enum.with_index
-        |> Enum.map(fn {x, i} -> x * (:math.pow(16, len - i - 1) |> round) end)
+        |> Enum.map(fn {x, i} -> x * round(:math.pow(16, i)) end)
         |> Enum.sum
     rescue
       _ in ArgumentError -> 0
