@@ -19,8 +19,8 @@ defmodule BinarySearchTree do
   end
 
   def in_order(%BinarySearchTree{} = tree) do
-    left = if tree.left == nil, do: [], else: in_order(tree.left)
-    right = if tree.right == nil, do: [], else: in_order(tree.right)
+    left = if tree.left, do: in_order(tree.left), else: []
+    right = if tree.right, do: in_order(tree.right), else: [] 
     left ++ [tree.data] ++ right
   end
 end
