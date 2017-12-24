@@ -8,7 +8,7 @@ defmodule Sieve do
 
   def reduce(i, {candidates, primes}) do
     if i in candidates do
-      {candidates |> Enum.filter(fn j -> rem(j, i) != 0 end), [i] ++ primes}
+      {candidates |> Enum.filter(&(rem(&1, i) != 0)), [i] ++ primes}
     else
       {candidates, primes}
     end
