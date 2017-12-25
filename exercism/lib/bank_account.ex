@@ -46,7 +46,7 @@ defmodule BankAccount do
   end
 
   def close_bank(account) do
-    Agent.update(account, fn {status, trans} ->
+    Agent.update(account, fn {_, trans} ->
       {:closed, trans}
     end)
   end
