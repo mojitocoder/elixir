@@ -32,6 +32,20 @@ Elixir
 + `:observer.start` to start the ErlangVM' observer app
 + `IEx.Helpers.recompile` to reload code from inside `iex`
 
+## Phoenix
++ Install the latest version of Phoenix: `mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez`
++ `mix phx.new` to create a new project, e.g. `mix phx.new conduit --module Conduit --app conduit --no-brunch --no-html`
++ `mix phx.server` to run the Phoenix webserver, default URL: `http://localhost:4000/`
+
+## Postgres
++ Start the service: `pg_ctl -D /usr/local/var/postgres start`
++ Stop the service: `pg_ctl -D /usr/local/var/postgres stop`
++ Version: `postgres -V `
++ Command line: `psql postgres`
+  + `\du`: see what's installed on the machine
+  + `\l`: list of databases
+  + `\d`: list of tables
+
 ## GenServer
 
 ## Supervisor
