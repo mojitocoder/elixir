@@ -1,23 +1,5 @@
 defmodule BinTree do
   defstruct [:value, :left, :right]
-
-  # def new(n) do
-  #   %BinTree{value: n}
-  # end
-  #
-  #
-  # def insert(%BinTree{} = tree, n) do
-  #   cond do
-  #     n <= tree.value && tree.left == nil ->
-  #       %BinTree{tree | left: new(n)}
-  #     n <= tree.value && tree.left != nil ->
-  #       %BinTree{tree | left: insert(tree.left, n)}
-  #     tree.value < n && tree.right == nil ->
-  #       %BinTree{tree | right: new(n)}
-  #     tree.value < n && tree.right != nil ->
-  #       %BinTree{tree | right: insert(tree.right, n)}
-  #   end
-  # end
 end
 
 defmodule ZipperHelper do
@@ -43,20 +25,6 @@ defmodule Zipper do
     %Zipper{data: data, focus: ""}
   end
 
-  defp add_node_to_map(map, key, %BinTree{} = node) do
-    map = Map.put(map, key, node.value)
-    map = if node.left do
-            add_node_to_map(map, "#{key}L", node.left)
-          else
-            map
-          end
-    if node.right do
-      add_node_to_map(map, "#{key}R", node.right)
-    else
-      map
-    end
-  end
-
   def to_tree(%Zipper{} = zipper) do
     zipper.data
       |> Enum.sort(fn (a, b) ->
@@ -65,21 +33,6 @@ defmodule Zipper do
       |> Enum.reduce(nil, fn ({position, value}, acc) ->
           build_tree(acc, value, position)
          end)
-  end
-
-  def build_tree(tree, n, position) do
-    cond do
-      position == "" ->
-        %BinTree{value: n}
-      position == "L" ->
-        %BinTree{tree | left: build_tree(nil, n, "")}
-      position == "R" ->
-        %BinTree{tree | right: build_tree(nil, n, "")}
-      String.slice(position, 0, 1) == "L" ->
-        %BinTree{tree | left: build_tree(tree.left, n, String.slice(position, 1, String.length(position) - 1))}
-      String.slice(position, 0, 1) == "R" ->
-        %BinTree{tree | right: build_tree(tree.right, n, String.slice(position, 1, String.length(position) - 1))}
-    end
   end
 
   def left(%Zipper{} = zipper) do
@@ -103,14 +56,6 @@ defmodule Zipper do
     end
   end
 
-  defp move_focus(%Zipper{} = zipper, new_focus) do
-    if zipper.data[new_focus] do
-      %Zipper{zipper | focus: new_focus}
-    else
-      nil
-    end
-  end
-
   def set_value(%Zipper{} = zipper, value) do
     %Zipper{zipper | data: Map.replace(zipper.data, zipper.focus, value)}
   end
@@ -131,6 +76,14 @@ defmodule Zipper do
     remove_sub_tree(zipper, "#{zipper.focus}R")
   end
 
+  defp move_focus(%Zipper{} = zipper, new_focus) do
+    if zipper.data[new_focus] do
+      %Zipper{zipper | focus: new_focus}
+    else
+      nil
+    end
+  end
+
   defp add_sub_tree(%Zipper{} = zipper, %BinTree{} = tree, prefix) do
     additional_map = (tree |> from_tree).data
                       |> Enum.map(fn {k, v}-> {"#{prefix}#{k}", v} end)
@@ -143,5 +96,34 @@ defmodule Zipper do
                 |> Enum.filter(fn {k, _} -> !String.starts_with?(k, prefix) end)
                 |> Map.new
     %Zipper{zipper | data: new_map}
+  end
+
+  defp build_tree(tree, n, position) do
+    cond do
+      position == "" ->
+        %BinTree{value: n}
+      position == "L" ->
+        %BinTree{tree | left: build_tree(nil, n, "")}
+      position == "R" ->
+        %BinTree{tree | right: build_tree(nil, n, "")}
+      String.slice(position, 0, 1) == "L" ->
+        %BinTree{tree | left: build_tree(tree.left, n, String.slice(position, 1, String.length(position) - 1))}
+      String.slice(position, 0, 1) == "R" ->
+        %BinTree{tree | right: build_tree(tree.right, n, String.slice(position, 1, String.length(position) - 1))}
+    end
+  end
+
+  defp add_node_to_map(map, key, %BinTree{} = node) do
+    map = Map.put(map, key, node.value)
+    map = if node.left do
+            add_node_to_map(map, "#{key}L", node.left)
+          else
+            map
+          end
+    if node.right do
+      add_node_to_map(map, "#{key}R", node.right)
+    else
+      map
+    end
   end
 end
