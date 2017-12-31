@@ -50,17 +50,21 @@ defmodule Zipper do
           else
             map
           end
-    map = if node.right do
-            add_node_to_map(map, "#{key}R", node.right)
-          else
-            map
-          end
+    if node.right do
+      add_node_to_map(map, "#{key}R", node.right)
+    else
+      map
+    end
   end
 
   def to_tree(%Zipper{} = zipper) do
     zipper.data
-      |> Enum.sort(fn (a, b) -> String.length(elem(a,0))< String.length(elem(b,0)) end)
-      |> Enum.reduce(nil, fn ({position, value}, acc) -> build_tree(acc, value, position) end)
+      |> Enum.sort(fn (a, b) ->
+          String.length(elem(a,0)) < String.length(elem(b,0))
+         end)
+      |> Enum.reduce(nil, fn ({position, value}, acc) ->
+          build_tree(acc, value, position)
+         end)
   end
 
   def build_tree(tree, n, position) do
@@ -78,31 +82,66 @@ defmodule Zipper do
     end
   end
 
-  def left(zipper) do
-
+  def left(%Zipper{} = zipper) do
+    move_focus(zipper, "#{zipper.focus}L")
   end
 
-  def right(zipper) do
-
+  def right(%Zipper{} = zipper) do
+    move_focus(zipper, "#{zipper.focus}R")
   end
 
-  def value(zipper) do
-
+  def value(%Zipper{} = zipper) do
+    zipper.data[zipper.focus]
   end
 
-  def up(node) do
-
+  def up(%Zipper{} = zipper) do
+    if zipper.focus == "" do
+      nil
+    else
+      new_focus = String.slice(zipper.focus, 0, String.length(zipper.focus) - 1)
+      move_focus(zipper, new_focus)
+    end
   end
 
-  def set_value(node, value) do
-
+  defp move_focus(%Zipper{} = zipper, new_focus) do
+    if zipper.data[new_focus] do
+      %Zipper{zipper | focus: new_focus}
+    else
+      nil
+    end
   end
 
-  def set_left(node, tree) do
-
+  def set_value(%Zipper{} = zipper, value) do
+    %Zipper{zipper | data: Map.replace(zipper.data, zipper.focus, value)}
   end
 
-  def set_right(node, tree) do
+  def set_left(%Zipper{} = zipper, %BinTree{} = tree) do
+    add_sub_tree(zipper, tree, "#{zipper.focus}L")
+  end
 
+  def set_left(%Zipper{} = zipper, nil) do
+    remove_sub_tree(zipper, "#{zipper.focus}L")
+  end
+
+  def set_right(%Zipper{} = zipper, %BinTree{} = tree) do
+    add_sub_tree(zipper, tree, "#{zipper.focus}R")
+  end
+
+  def set_right(%Zipper{} = zipper, nil) do
+    remove_sub_tree(zipper, "#{zipper.focus}R")
+  end
+
+  defp add_sub_tree(%Zipper{} = zipper, %BinTree{} = tree, prefix) do
+    additional_map = (tree |> from_tree).data
+                      |> Enum.map(fn {k, v}-> {"#{prefix}#{k}", v} end)
+                      |> Map.new
+    %Zipper{zipper | data: Map.merge(zipper.data, additional_map)}
+  end
+
+  defp remove_sub_tree(%Zipper{} = zipper, prefix) do
+    new_map = zipper.data
+                |> Enum.filter(fn {k, _} -> !String.starts_with?(k, prefix) end)
+                |> Map.new
+    %Zipper{zipper | data: new_map}
   end
 end
