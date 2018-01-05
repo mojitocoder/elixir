@@ -7,7 +7,7 @@ defmodule PokerTest do
     assert Poker.best_hand([high_of_jack]) == [high_of_jack]
   end
 
-  @tag :pending
+  # @tag :pending
   test "highest card out of all hands wins" do
     high_of_8 = ~w(4D 5S 6S 8D 3C)
     high_of_10 = ~w(2S 4C 7S 9H 10H)
@@ -15,7 +15,7 @@ defmodule PokerTest do
     assert Poker.best_hand([high_of_8, high_of_10, high_of_jack]) == [high_of_jack]
   end
 
-  @tag :pending
+  # @tag :pending
   test "a tie has multiple winners" do
     high_of_8 = ~w(4D 5S 6S 8D 3C)
     high_of_10 = ~w(2S 4C 7S 9H 10H)
@@ -26,7 +26,7 @@ defmodule PokerTest do
     assert Poker.best_hand(hands) == [high_of_jack, another_high_of_jack]
   end
 
-  @tag :pending
+  # @tag :pending
   test "multiple hands with the same high cards, tie compares next highest ranked, down to last card" do
     high_of_8_low_of_3 = ~w(3S 5H 6S 8D 7H)
     high_of_8_low_of_2 = ~w(2S 5D 6D 8C 7S)
