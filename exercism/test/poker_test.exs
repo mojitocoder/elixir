@@ -40,21 +40,21 @@ defmodule PokerTest do
     assert Poker.best_hand([high_of_king, pair_of_4]) == [pair_of_4]
   end
 
-  @tag :pending
+  # @tag :pending
   test "highest pair wins" do
     pair_of_2 = ~w(4S 2H 6S 2D JH)
     pair_of_4 = ~w(2S 4H 6C 4D JD)
     assert Poker.best_hand([pair_of_2, pair_of_4]) == [pair_of_4]
   end
 
-  @tag :pending
+  # @tag :pending
   test "two pairs beats one pair" do
     pair_of_8 = ~w(2S 8H 6S 8D JH)
     fives_and_fours = ~w(4S 5H 4C 8C 5C)
     assert Poker.best_hand([pair_of_8, fives_and_fours]) == [fives_and_fours]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have two pairs, highest ranked pair wins" do
     eights_and_twos = ~w(2S 8H 2D 8D 3H)
     fives_and_fours = ~w(4S 5H 4C 8S 5D)

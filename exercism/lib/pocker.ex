@@ -59,24 +59,56 @@ defmodule Poker.Hand do
   end
 
   def compare(%H{} = a, %H{} = b) do
-    compare_ranks(sort(a), sort(b))
+    require IEx
+    IEx.pry()
+    cond do
+      compare_pairs(a, b) != 0 ->
+        compare_pairs(a, b)
+      compare_pairs(a, b) == 0 ->
+        compare_ranks(sort(a), sort(b))
+    end
   end
 
-  def contains_one_pair(%H{} = hand) do
-    rank_counts =
-      hand.cards
-        |> Enum.map(fn c -> C.get_comparable_rank(c) end)
-        |> Enum.group_by(fn r -> r end)
-        |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
-
-    counts =
-      rank_counts
-        |> Enum.map(fn {_, count} -> count end)
-        |> Enum.sort(&(&1 >= &2))
-    
+  def compare_pairs(%H{} = a, %H{} = b) do
+    pairs_of_a = get_pairs(a)
+    pairs_of_b = get_pairs(b)
+    cond do
+      Enum.count(pairs_of_a) > Enum.count(pairs_of_b) ->
+        1
+      Enum.count(pairs_of_a) < Enum.count(pairs_of_b) ->
+        -1
+      Enum.count(pairs_of_a) == Enum.count(pairs_of_b)
+        && Enum.count(pairs_of_b) == 0 ->
+        0
+      Enum.count(pairs_of_a) == Enum.count(pairs_of_b)
+        && Enum.count(pairs_of_b) != 0 ->
+        compare_integers(List.last(pairs_of_a), List.last(pairs_of_b))
+    end
   end
 
-  defp compare_ranks(%H{} = sorted_a, %H{} = sorted_b) do
+  def compare_integers(a, b) do
+    cond do
+      a > b  -> 1
+      a == b -> 0
+      a < b  -> -1
+    end
+  end
+
+  defp rank_counts(%H{} = hand) do
+    hand.cards
+      |> Enum.map(fn c -> C.get_comparable_rank(c) end)
+      |> Enum.group_by(fn r -> r end)
+      |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
+  end
+
+  def get_pairs(%H{} = hand) do
+    rank_counts(hand)
+      |> Enum.filter(fn {_, v} -> v == 2 end)
+      |> Enum.map(fn {k, _} -> k end)
+      |> Enum.sort
+  end
+
+  def compare_ranks(%H{} = sorted_a, %H{} = sorted_b) do
     if Enum.count(sorted_a.cards) == 0 do
       0
     else
@@ -101,6 +133,7 @@ defmodule Poker.Hand do
     sorted_hand.cards |> List.last |> C.get_comparable_rank
   end
 
+  # ascending
   defp sort(%H{} = hand) do
     %H{cards: hand.cards
                 |> Enum.sort(&(C.get_comparable_rank(&1) <= C.get_comparable_rank(&2)))}
