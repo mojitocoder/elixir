@@ -54,28 +54,46 @@ defmodule Poker.Hand do
     %H{cards: cards |> Enum.map(&C.new(&1))}
   end
 
+  def list_cards(%H{} = hand) do
+    hand.cards |> Enum.map(&(C.to_string(&1)))
+  end
+
   def compare(%H{} = a, %H{} = b) do
-    a_max_rank = get_max_rank(a)
-    b_max_rank = get_max_rank(b)
-    cond do
-      a_max_rank > b_max_rank
-        -> 1
-      a_max_rank == b_max_rank
-        -> 0
-      a_max_rank < b_max_rank
-        -> -1
+    compare_ranks(sort(a), sort(b))
+  end
+
+  def compare_ranks(%H{} = sorted_a, %H{} = sorted_b) do
+    if Enum.count(sorted_a.cards) == 0 do
+      0
+    else
+      a_max_rank = get_max_rank(sorted_a)
+      b_max_rank = get_max_rank(sorted_b)
+      cond do
+        a_max_rank > b_max_rank
+          -> 1
+        a_max_rank == b_max_rank
+          -> compare_ranks(remove_last_card(sorted_a), remove_last_card(sorted_b))
+        a_max_rank < b_max_rank
+          -> -1
+      end
     end
   end
 
-  def get_max_rank(%H{} = hand) do
-    hand.cards
-      |> Enum.map(&C.get_comparable_rank(&1))
-      |> Enum.sort(&(&1 >= &2))
-      |> List.first
+  def remove_last_card(%H{} = hand) do
+    %H{cards: hand.cards |> Enum.take(Enum.count(hand.cards) - 1)}
   end
 
-  def list_cards(%H{} = hand) do
-    hand.cards |> Enum.map(&(C.to_string(&1)))
+  def get_max_rank(%H{} = sorted_hand) do
+    # hand.cards
+    #   |> Enum.map(&C.get_comparable_rank(&1))
+    #   |> Enum.sort(&(&1 >= &2))
+    #   |> List.first
+    sorted_hand.cards |> List.last |> C.get_comparable_rank
+  end
+
+  defp sort(%H{} = hand) do
+    %H{cards: hand.cards
+                |> Enum.sort(&(C.get_comparable_rank(&1) <= C.get_comparable_rank(&2)))}
   end
 end
 
@@ -86,11 +104,12 @@ defmodule Poker do
   def best_hand(hands) do
     hands
       |> Enum.map(&H.new(&1))
+      # |> Enum.map(fn h -> {h, H.sort(h)} end)
       |> Enum.reduce([], fn (hand, acc) ->
         case acc do
           [] ->
             [hand]
-          [head | tail] ->
+          [head | _] ->
             case H.compare(hand, head) do
               1  -> [hand]
               0  -> acc ++ [hand]
