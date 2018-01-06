@@ -82,14 +82,14 @@ defmodule PokerTest do
     assert Poker.best_hand([eights_and_twos, three_fours]) == [three_fours]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have three of a kind, tie goes to highest ranked triplet" do
     three_twos = ~w(2S 2H 2C 8D JH)
     three_aces = ~w(4S AH AS 8C AD)
     assert Poker.best_hand([three_twos, three_aces]) == [three_aces]
   end
 
-  @tag :pending
+  # @tag :pending
   test "with multiple decks, two players can have same three of a kind, ties go to highest remaining cards" do
     three_aces_7_high = ~w(4S AH AS 7C AD)
     three_aces_8_high = ~w(4S AH AS 8C AD)

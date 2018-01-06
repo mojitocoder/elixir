@@ -60,10 +60,25 @@ defmodule Poker.Hand do
 
   def compare(%H{} = a, %H{} = b) do
     cond do
+      compare_triplets(a, b) != 0 ->
+        compare_triplets(a, b)
       compare_pairs(a, b) != 0 ->
         compare_pairs(a, b)
       compare_pairs(a, b) == 0 ->
         compare_ranks(a, b)
+    end
+  end
+
+  def compare_triplets(%H{} = a, %H{} = b) do
+    triplet_of_a = get_triplet(a)
+    triplet_of_b = get_triplet(b)
+    cond do
+      Enum.count(triplet_of_a) > Enum.count(triplet_of_b) ->
+        1
+      Enum.count(triplet_of_a) < Enum.count(triplet_of_b) ->
+        -1
+      Enum.count(triplet_of_a) == Enum.count(triplet_of_b) ->
+        compare_sorted_arrays(triplet_of_a, triplet_of_b)
     end
   end
 
@@ -87,9 +102,13 @@ defmodule Poker.Hand do
       |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
   end
 
-  def get_pairs(%H{} = hand) do
+  def get_pairs(%H{} = hand), do: get_multiples(hand, 2)
+
+  def get_triplet(%H{} = hand), do: get_multiples(hand, 3)
+
+  def get_multiples(%H{} = hand, m) do
     rank_counts(hand)
-      |> Enum.filter(fn {_, v} -> v == 2 end)
+      |> Enum.filter(fn {_, v} -> v == m end)
       |> Enum.map(fn {k, _} -> k end)
       |> Enum.sort(&(&1 >= &2))
   end
