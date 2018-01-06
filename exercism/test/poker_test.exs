@@ -99,35 +99,35 @@ defmodule PokerTest do
     assert Poker.best_hand([three_aces_8_high_5_low, three_aces_8_high]) == [three_aces_8_high_5_low]
   end
 
-  @tag :pending
+  # @tag :pending
   test "a straight beats three of a kind" do
     three_fours = ~w(4S 5H 4C 8D 4H)
     straight = ~w(3S 4D 2S 6D 5C)
     assert Poker.best_hand([three_fours, straight]) == [straight]
   end
 
-  @tag :pending
+  # @tag :pending
   test "aces can be end a straight (10 J Q K A)" do
     three_fours = ~w(4S 5H 4C 8D 4H)
     straight_to_ace = ~w(10D JH QS KD AC)
     assert Poker.best_hand([three_fours, straight_to_ace]) == [straight_to_ace]
   end
 
-  @tag :pending
+  # @tag :pending
   test "aces can be start a straight (A 2 3 4 5)" do
     three_fours = ~w(4S 5H 4C 8D 4H)
     straight_to_5 = ~w(4D AH 3S 2D 5C)
     assert Poker.best_hand([three_fours, straight_to_5]) == [straight_to_5]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands with a straight, tie goes to highest ranked card" do
     straight_to_8 = ~w(4S 6C 7S 8D 5H)
     straight_to_9 = ~w(5S 7H 8S 9D 6H)
     assert Poker.best_hand([straight_to_8, straight_to_9]) == [straight_to_9]
   end
 
-  @tag :pending
+  # @tag :pending
   test "even though an ace is usually high, a 5-high straight is the lowest-scoring straight" do
     straight_to_6 = ~w(2H 3C 4D 5D 6H)
     straight_to_5 = ~w(4S AH 3S 2D 5H)

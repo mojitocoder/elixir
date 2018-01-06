@@ -60,12 +60,32 @@ defmodule Poker.Hand do
 
   def compare(%H{} = a, %H{} = b) do
     cond do
+      compare_straights(a, b) != 0 ->
+        compare_straights(a, b)
       compare_triplets(a, b) != 0 ->
         compare_triplets(a, b)
       compare_pairs(a, b) != 0 ->
         compare_pairs(a, b)
       compare_pairs(a, b) == 0 ->
         compare_ranks(a, b)
+    end
+  end
+
+  def compare_straights(%H{} = a, %H{} = b) do
+    compare_sorted_arrays([get_straight_highest(a)], [get_straight_highest(b)])
+  end
+
+  def get_straight_highest(%H{} = hand) do
+    ranks = get_sorted_ranks(hand)
+    highest = ranks |> List.first
+    lowest = ranks |> List.last
+    cond do
+      ranks == Enum.to_list(highest..lowest) ->
+        highest
+      ranks == [14, 5, 4, 3, 2] ->
+        5
+      true ->
+        0
     end
   end
 
