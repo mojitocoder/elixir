@@ -60,6 +60,8 @@ defmodule Poker.Hand do
 
   def compare(%H{} = a, %H{} = b) do
     cond do
+      compare_flushes(a, b) != 0 ->
+        compare_flushes(a, b)
       compare_straights(a, b) != 0 ->
         compare_straights(a, b)
       compare_triplets(a, b) != 0 ->
@@ -69,6 +71,25 @@ defmodule Poker.Hand do
       compare_pairs(a, b) == 0 ->
         compare_ranks(a, b)
     end
+  end
+
+  def compare_flushes(%H{} = a, %H{} = b) do
+    cond do
+      is_flush(a) && !is_flush(b) ->
+        1
+      !is_flush(a) && is_flush(b) ->
+        -1
+      true ->
+        0
+    end
+  end
+
+  def is_flush(%H{} = hand) do
+    hand.cards
+      |> Enum.map(fn c -> c.suit end)
+      |> MapSet.new
+      |> Enum.count
+      == 1
   end
 
   def compare_straights(%H{} = a, %H{} = b) do

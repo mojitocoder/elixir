@@ -134,14 +134,14 @@ defmodule PokerTest do
     assert Poker.best_hand([straight_to_6, straight_to_5]) == [straight_to_6]
   end
 
-  @tag :pending
+  # @tag :pending
   test "flush beats a straight" do
     straight_to_8 = ~w(4C 6H 7D 8D 5H)
     flush_to_7 = ~w(2S 4S 5S 6S 7S)
     assert Poker.best_hand([straight_to_8, flush_to_7]) == [flush_to_7]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have a flush, tie goes to high card, down to the last one if necessary" do
     flush_to_9 = ~w(4H 7H 8H 9H 6H)
     flush_to_7 = ~w(2S 4S 5S 6S 7S)
