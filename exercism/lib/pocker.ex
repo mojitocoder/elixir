@@ -62,7 +62,21 @@ defmodule Poker.Hand do
     compare_ranks(sort(a), sort(b))
   end
 
-  def compare_ranks(%H{} = sorted_a, %H{} = sorted_b) do
+  def contains_one_pair(%H{} = hand) do
+    rank_counts =
+      hand.cards
+        |> Enum.map(fn c -> C.get_comparable_rank(c) end)
+        |> Enum.group_by(fn r -> r end)
+        |> Enum.map(fn {k, v} -> {k, Enum.count(v)} end)
+
+    counts =
+      rank_counts
+        |> Enum.map(fn {_, count} -> count end)
+        |> Enum.sort(&(&1 >= &2))
+    
+  end
+
+  defp compare_ranks(%H{} = sorted_a, %H{} = sorted_b) do
     if Enum.count(sorted_a.cards) == 0 do
       0
     else
@@ -79,15 +93,11 @@ defmodule Poker.Hand do
     end
   end
 
-  def remove_last_card(%H{} = hand) do
+  defp remove_last_card(%H{} = hand) do
     %H{cards: hand.cards |> Enum.take(Enum.count(hand.cards) - 1)}
   end
 
-  def get_max_rank(%H{} = sorted_hand) do
-    # hand.cards
-    #   |> Enum.map(&C.get_comparable_rank(&1))
-    #   |> Enum.sort(&(&1 >= &2))
-    #   |> List.first
+  defp get_max_rank(%H{} = sorted_hand) do
     sorted_hand.cards |> List.last |> C.get_comparable_rank
   end
 
@@ -104,7 +114,6 @@ defmodule Poker do
   def best_hand(hands) do
     hands
       |> Enum.map(&H.new(&1))
-      # |> Enum.map(fn h -> {h, H.sort(h)} end)
       |> Enum.reduce([], fn (hand, acc) ->
         case acc do
           [] ->

@@ -33,7 +33,7 @@ defmodule PokerTest do
     assert Poker.best_hand([high_of_8_low_of_3, high_of_8_low_of_2]) == [high_of_8_low_of_3]
   end
 
-  @tag :pending
+  # @tag :pending
   test "one pair beats high card" do
     high_of_king = ~w(4S 5H 6C 8D KH)
     pair_of_4 = ~w(2S 4H 6S 4D JH)
