@@ -61,21 +61,21 @@ defmodule PokerTest do
     assert Poker.best_hand([eights_and_twos, fives_and_fours]) == [eights_and_twos]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have two pairs, with the same highest ranked pair, tie goes to low pair" do
     queens_and_twos = ~w(2S QS 2C QD JH)
     queens_and_jacks = ~w(JD QH JS 8D QC)
     assert Poker.best_hand([queens_and_twos, queens_and_jacks]) == [queens_and_jacks]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have two identically ranked pairs, tie goes to remaining card (kicker)" do
     queens_jacks_and_8 = ~w(JD QH JS 8D QC)
     queens_jacks_and_2 = ~w(JS QS JC 2D QD)
     assert Poker.best_hand([queens_jacks_and_8, queens_jacks_and_2]) == [queens_jacks_and_8]
   end
 
-  @tag :pending
+  # @tag :pending
   test "three of a kind beats two pair" do
     eights_and_twos = ~w(2S 8H 2H 8D JH)
     three_fours = ~w(4S 5H 4C 8S 4H)

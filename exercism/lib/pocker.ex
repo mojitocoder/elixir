@@ -59,13 +59,11 @@ defmodule Poker.Hand do
   end
 
   def compare(%H{} = a, %H{} = b) do
-    require IEx
-    IEx.pry()
     cond do
       compare_pairs(a, b) != 0 ->
         compare_pairs(a, b)
       compare_pairs(a, b) == 0 ->
-        compare_ranks(sort(a), sort(b))
+        compare_ranks(a, b)
     end
   end
 
@@ -77,24 +75,12 @@ defmodule Poker.Hand do
         1
       Enum.count(pairs_of_a) < Enum.count(pairs_of_b) ->
         -1
-      Enum.count(pairs_of_a) == Enum.count(pairs_of_b)
-        && Enum.count(pairs_of_b) == 0 ->
-        0
-      Enum.count(pairs_of_a) == Enum.count(pairs_of_b)
-        && Enum.count(pairs_of_b) != 0 ->
-        compare_integers(List.last(pairs_of_a), List.last(pairs_of_b))
+      Enum.count(pairs_of_a) == Enum.count(pairs_of_b) ->
+        compare_sorted_arrays(pairs_of_a, pairs_of_b)
     end
   end
 
-  def compare_integers(a, b) do
-    cond do
-      a > b  -> 1
-      a == b -> 0
-      a < b  -> -1
-    end
-  end
-
-  defp rank_counts(%H{} = hand) do
+  def rank_counts(%H{} = hand) do
     hand.cards
       |> Enum.map(fn c -> C.get_comparable_rank(c) end)
       |> Enum.group_by(fn r -> r end)
@@ -105,38 +91,28 @@ defmodule Poker.Hand do
     rank_counts(hand)
       |> Enum.filter(fn {_, v} -> v == 2 end)
       |> Enum.map(fn {k, _} -> k end)
-      |> Enum.sort
+      |> Enum.sort(&(&1 >= &2))
   end
 
-  def compare_ranks(%H{} = sorted_a, %H{} = sorted_b) do
-    if Enum.count(sorted_a.cards) == 0 do
-      0
-    else
-      a_max_rank = get_max_rank(sorted_a)
-      b_max_rank = get_max_rank(sorted_b)
-      cond do
-        a_max_rank > b_max_rank
-          -> 1
-        a_max_rank == b_max_rank
-          -> compare_ranks(remove_last_card(sorted_a), remove_last_card(sorted_b))
-        a_max_rank < b_max_rank
-          -> -1
-      end
+  # descending
+  def compare_sorted_arrays([], []), do: 0
+  def compare_sorted_arrays([ha | ta], [hb | tb]) do
+    cond do
+      ha > hb  -> 1
+      ha == hb -> compare_sorted_arrays(ta, tb)
+      ha < hb  -> -1
     end
   end
 
-  defp remove_last_card(%H{} = hand) do
-    %H{cards: hand.cards |> Enum.take(Enum.count(hand.cards) - 1)}
+  # descending
+  def get_sorted_ranks(%H{} = hand) do
+    hand.cards
+      |> Enum.map(fn c -> C.get_comparable_rank(c) end)
+      |> Enum.sort(&(&1 >= &2))
   end
 
-  defp get_max_rank(%H{} = sorted_hand) do
-    sorted_hand.cards |> List.last |> C.get_comparable_rank
-  end
-
-  # ascending
-  defp sort(%H{} = hand) do
-    %H{cards: hand.cards
-                |> Enum.sort(&(C.get_comparable_rank(&1) <= C.get_comparable_rank(&2)))}
+  def compare_ranks(%H{} = a, %H{} = b) do
+    compare_sorted_arrays(get_sorted_ranks(a), get_sorted_ranks(b))
   end
 end
 
