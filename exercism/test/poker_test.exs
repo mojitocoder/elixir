@@ -151,7 +151,7 @@ defmodule PokerTest do
     assert Poker.best_hand([flush_to_9, flush_to_9_with_4_matches]) == [flush_to_9]
   end
 
-  @tag :pending
+  # @tag :pending
   test "full house beats a flush" do
     flush_to_8 = ~w(3H 6H 7H 8H 5H)
     full = ~w(4S 5H 4C 5D 4H)

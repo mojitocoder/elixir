@@ -73,6 +73,14 @@ defmodule Poker.Hand do
     end
   end
 
+  def compare_full_houses(%H{} = a, %H{} = b) do
+    0
+  end
+
+  def get_full_house(%H{} = hand) do
+    
+  end
+
   def compare_flushes(%H{} = a, %H{} = b) do
     cond do
       is_flush(a) && !is_flush(b) ->
