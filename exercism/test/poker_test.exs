@@ -172,21 +172,21 @@ defmodule PokerTest do
     assert Poker.best_hand([full_of_5_by_9, full_of_5_by_8]) == [full_of_5_by_9]
   end
 
-  @tag :pending
+  # @tag :pending
   test "four of a kind beats a full house" do
     full = ~w(4S 5H 4D 5D 4H)
     four_3s = ~w(3S 3H 2S 3D 3C)
     assert Poker.best_hand([four_3s, full]) == [four_3s]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have four of a kind, tie goes to high quad" do
     four_2s = ~w(2S 2H 2C 8D 2D)
     four_5s = ~w(4S 5H 5S 5D 5C)
     assert Poker.best_hand([four_2s, four_5s]) == [four_5s]
   end
 
-  @tag :pending
+  # @tag :pending
   test "with multiple decks, both hands with identical four of a kind, tie determined by kicker" do
     four_3s_and_2 = ~w(3S 3H 2S 3D 3C)
     four_3s_and_4 = ~w(3S 3H 4S 3D 3C)

@@ -60,6 +60,8 @@ defmodule Poker.Hand do
 
   def compare(%H{} = a, %H{} = b) do
     cond do
+      compare_four_of_a_kinds(a, b) != 0 ->
+        compare_four_of_a_kinds(a, b)
       compare_full_houses(a, b) != 0 ->
         compare_full_houses(a, b)
       compare_flushes(a, b) != 0 ->
@@ -75,6 +77,35 @@ defmodule Poker.Hand do
     end
   end
 
+  def compare_four_of_a_kinds(%H{} = a, %H{} = b) do
+    cond do
+      is_four_of_a_kind(a) && !is_four_of_a_kind(b) ->
+        1
+      !is_four_of_a_kind(a) && is_four_of_a_kind(b) ->
+        -1
+      is_four_of_a_kind(a) && is_four_of_a_kind(b) ->
+        compare_sorted_arrays(get_ranks_by_reverse_count(a), get_ranks_by_reverse_count(b))
+      !is_four_of_a_kind(a) && !is_four_of_a_kind(b) ->
+        0
+    end
+  end
+
+  def is_four_of_a_kind(%H{} = hand) do
+    rank_counts(hand)
+      |> Enum.map(fn {_, count} -> count end)
+      |> Enum.sort
+      == [1, 4]
+  end
+
+  # e.g.
+  # returns: [quad's rank, kicker's rank]
+  # returns: [triplet's rank, pair's rank]
+  def get_ranks_by_reverse_count(%H{} = hand) do
+    rank_counts(hand)
+      |> Enum.sort(&(elem(&1,1) > elem(&2,1))) #sort descendingly by count
+      |> Enum.map(fn {rank, _} -> rank end)
+  end
+
   def compare_full_houses(%H{} = a, %H{} = b) do
     cond do
       is_full_house(a) && !is_full_house(b) ->
@@ -82,7 +113,7 @@ defmodule Poker.Hand do
       !is_full_house(a) && is_full_house(b) ->
         -1
       is_full_house(a) && is_full_house(b) ->
-        compare_sorted_arrays(get_full_house(a), get_full_house(b))
+        compare_sorted_arrays(get_ranks_by_reverse_count(a), get_ranks_by_reverse_count(b))
       !is_full_house(a) && !is_full_house(b) ->
         0
     end
@@ -95,12 +126,12 @@ defmodule Poker.Hand do
       == [2, 3]
   end
 
-  # returns: [triplet's rank, pair's rank]
-  def get_full_house(%H{} = hand) do
-    rank_counts(hand)
-      |> Enum.sort(&(elem(&1,1) > elem(&2,1))) #sort descendingly by count
-      |> Enum.map(fn {rank, _} -> rank end)
-  end
+  # # returns: [triplet's rank, pair's rank]
+  # def get_full_house(%H{} = hand) do
+  #   rank_counts(hand)
+  #     |> Enum.sort(&(elem(&1,1) > elem(&2,1))) #sort descendingly by count
+  #     |> Enum.map(fn {rank, _} -> rank end)
+  # end
 
   def compare_flushes(%H{} = a, %H{} = b) do
     cond do
