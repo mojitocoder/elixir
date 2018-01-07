@@ -60,6 +60,8 @@ defmodule Poker.Hand do
 
   def compare(%H{} = a, %H{} = b) do
     cond do
+      compare_full_houses(a, b) != 0 ->
+        compare_full_houses(a, b)
       compare_flushes(a, b) != 0 ->
         compare_flushes(a, b)
       compare_straights(a, b) != 0 ->
@@ -74,11 +76,30 @@ defmodule Poker.Hand do
   end
 
   def compare_full_houses(%H{} = a, %H{} = b) do
-    0
+    cond do
+      is_full_house(a) && !is_full_house(b) ->
+        1
+      !is_full_house(a) && is_full_house(b) ->
+        -1
+      is_full_house(a) && is_full_house(b) ->
+        compare_sorted_arrays(get_full_house(a), get_full_house(b))
+      !is_full_house(a) && !is_full_house(b) ->
+        0
+    end
   end
 
+  def is_full_house(%H{} = hand) do
+    rank_counts(hand)
+      |> Enum.map(fn {_, count} -> count end)
+      |> Enum.sort
+      == [2, 3]
+  end
+
+  # returns: [triplet's rank, pair's rank]
   def get_full_house(%H{} = hand) do
-    
+    rank_counts(hand)
+      |> Enum.sort(&(elem(&1,1) > elem(&2,1))) #sort descendingly by count
+      |> Enum.map(fn {rank, _} -> rank end)
   end
 
   def compare_flushes(%H{} = a, %H{} = b) do

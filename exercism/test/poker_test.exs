@@ -158,14 +158,14 @@ defmodule PokerTest do
     assert Poker.best_hand([flush_to_8, full]) == [full]
   end
 
-  @tag :pending
+  # @tag :pending
   test "both hands have a full house, tie goes to highest-ranked triplet" do
     full_of_4_by_9 = ~w(4H 4S 4D 9S 9D)
     full_of_5_by_8 = ~w(5H 5S 5D 8S 8D)
     assert Poker.best_hand([full_of_4_by_9, full_of_5_by_8]) == [full_of_5_by_8]
   end
 
-  @tag :pending
+  # @tag :pending
   test "with multiple decks, both hands have a full house with the same triplet, tie goes to the pair" do
     full_of_5_by_9 = ~w(5H 5S 5D 9S 9D)
     full_of_5_by_8 = ~w(5H 5S 5D 8S 8D)
