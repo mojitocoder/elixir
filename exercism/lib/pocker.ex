@@ -60,6 +60,8 @@ defmodule Poker.Hand do
 
   def compare(%H{} = a, %H{} = b) do
     cond do
+      compare_straight_flushes(a, b) != 0 ->
+        compare_straight_flushes(a, b)
       compare_four_of_a_kinds(a, b) != 0 ->
         compare_four_of_a_kinds(a, b)
       compare_full_houses(a, b) != 0 ->
@@ -75,6 +77,23 @@ defmodule Poker.Hand do
       compare_pairs(a, b) == 0 ->
         compare_ranks(a, b)
     end
+  end
+
+  def compare_straight_flushes(%H{} = a, %H{} = b) do
+    cond do
+      is_straight_flush(a) && !is_straight_flush(b) ->
+        1
+      !is_straight_flush(a) && is_straight_flush(b) ->
+        -1
+      !is_straight_flush(a) && !is_straight_flush(b) ->
+        0
+      is_straight_flush(a) && is_straight_flush(b) ->
+        compare_straights(a, b)
+    end
+  end
+
+  def is_straight_flush(%H{} = hand) do
+    get_straight_highest(hand) > 0 && is_flush(hand)
   end
 
   def compare_four_of_a_kinds(%H{} = a, %H{} = b) do
@@ -125,13 +144,6 @@ defmodule Poker.Hand do
       |> Enum.sort
       == [2, 3]
   end
-
-  # # returns: [triplet's rank, pair's rank]
-  # def get_full_house(%H{} = hand) do
-  #   rank_counts(hand)
-  #     |> Enum.sort(&(elem(&1,1) > elem(&2,1))) #sort descendingly by count
-  #     |> Enum.map(fn {rank, _} -> rank end)
-  # end
 
   def compare_flushes(%H{} = a, %H{} = b) do
     cond do
