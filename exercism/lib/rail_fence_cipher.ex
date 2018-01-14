@@ -30,10 +30,10 @@ defmodule RailFenceCipher do
     message
     |> String.graphemes()
     |> Enum.reduce({1..k |> Enum.map(fn _ -> [] end), C.new(0, -1)},
-       fn (char, {rails, coordinate}) ->
-         coordinate = C.next(coordinate, k)
-         rails = append(rails, coordinate, char)
-         {rails, coordinate}
+       fn (char, {rails, c}) ->
+         c = C.next(c, k)
+         rails = append(rails, c, char)
+         {rails, c}
        end)
     |> elem(0) #extract the rails out from the accumulator
     |> Enum.map(&Enum.join(&1))
@@ -56,18 +56,18 @@ defmodule RailFenceCipher do
       |> elem(0)
   end
 
-  def append(rails, %C{} = coordinate, char) do
-    rail = (rails |> Enum.at(coordinate.rail)) ++ [char]
-    rails |> List.replace_at(coordinate.rail, rail)
+  def append(rails, %C{} = c, char) do
+    rail = (rails |> Enum.at(c.rail)) ++ [char]
+    rails |> List.replace_at(c.rail, rail)
   end
 
   def rails_length(length, k) do
     1..length
       |> Enum.reduce({1..k |> Enum.map(fn _ -> 0 end), C.new(0, -1)},
-         fn (_, {lengths, coordinate}) ->
-           coordinate = C.next(coordinate, k)
-           lengths = lengths |> List.replace_at(coordinate.rail, Enum.at(lengths, coordinate.rail) + 1)
-           {lengths, coordinate}
+         fn (_, {lengths, c}) ->
+           c = C.next(c, k)
+           lengths = lengths |> List.replace_at(c.rail, Enum.at(lengths, c.rail) + 1)
+           {lengths, c}
          end)
       |> elem(0)
   end
