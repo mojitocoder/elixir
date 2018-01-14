@@ -40,8 +40,46 @@ defmodule RailFenceCipher do
     |> Enum.join
   end
 
+  def decode("", _), do: ""
+  def decode(message, 1), do: message
+  def decode(message, k) do
+    1..String.length(message)
+      |> Enum.reduce({"", C.new(0, -1), encoded_to_rails(message, k)},
+         fn (_, {decoded, c, rails}) ->
+           c = C.next(c, k)
+           rail = rails |> Enum.at(c.rail)
+           decoded = decoded <> String.slice(rail, 0, 1)
+           rail = rail |> String.slice(1, String.length(rail) - 1)
+           rails = rails |> List.replace_at(c.rail, rail)
+           {decoded, c, rails}
+         end)
+      |> elem(0)
+  end
+
   def append(rails, %C{} = coordinate, char) do
     rail = (rails |> Enum.at(coordinate.rail)) ++ [char]
     rails |> List.replace_at(coordinate.rail, rail)
+  end
+
+  def rails_length(length, k) do
+    1..length
+      |> Enum.reduce({1..k |> Enum.map(fn _ -> 0 end), C.new(0, -1)},
+         fn (_, {lengths, coordinate}) ->
+           coordinate = C.next(coordinate, k)
+           lengths = lengths |> List.replace_at(coordinate.rail, Enum.at(lengths, coordinate.rail) + 1)
+           {lengths, coordinate}
+         end)
+      |> elem(0)
+  end
+
+  def encoded_to_rails(message, k) do
+    rails_length(message |> String.length, k)
+      |> Enum.reduce({[], message},
+         fn (length, {rails, remaining}) ->
+           rail = remaining |> String.slice(0, length)
+           remaining = remaining |> String.slice(length, String.length(remaining) - length)
+           {rails ++ [rail], remaining}
+         end)
+      |> elem(0)
   end
 end
