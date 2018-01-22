@@ -1,12 +1,19 @@
 defmodule Blitzy.MixProject do
   use Mix.Project
-
+  use Mix.Config
+  
+  config :blitzy, master_node: :"a@127.0.0.1"
+  
+  config :blitzy, slave_nodes: [:"b@127.0.0.1",
+                                :"c@127.0.0.1",
+                                :"d@127.0.0.1"]
   def project do
     [
       app: :blitzy,
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
+      escript: [main_module: Blitzy.CLI],
       deps: deps()
     ]
   end
