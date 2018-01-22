@@ -32,6 +32,18 @@ Elixir
 + `:observer.start` to start the ErlangVM' observer app
 + `IEx.Helpers.recompile` to reload code from inside `iex`
 
+## Clustering
+
++ `iex --sname quynh` to start a new shell with (short) name = `quynh`
++ `iex --name quynh@127.0.0.1` to start a new shell with a long name
++ From the shell, i.e. `iex`
+   + `node` to get the name of node name of the VM
+   + `Node.list` to get the list nodes that connect to the current one
+   + `Node.connect <name>` to connect the current shell to another node
++ `:rpc.multical/3` to execute code in the cluster
++ `mix escript.build` to generate the command line
+
+
 ## Phoenix
 + Install the latest version of Phoenix: `mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez`
 + `mix phx.new` to create a new project, e.g. `mix phx.new conduit --module Conduit --app conduit --no-brunch --no-html`
@@ -109,4 +121,7 @@ Elixir support the following data types:
 
 **Utilities:**
 + `i` command in `iex`: Print out information about a variable
-+ ​
+
+## Plan
++ `Blitzy` command-line program
++ `Registry` for message dispatching & pub/sub
