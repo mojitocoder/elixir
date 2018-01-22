@@ -6,7 +6,11 @@ defmodule Blitzy.Supervisor do
   end
 
   def init(:ok) do
-    children = [supervisor(Task.Supervisor, [[name: Blitzy.TasksSupervisor]])]
-    supervise(children, strategy: :one_for_one)
+    children = [
+      supervisor(Task.Supervisor, [[name: Blitzy.TasksSupervisor]])
+    ]
+
+    supervise(children, [strategy: :one_for_one])
   end
+
 end
