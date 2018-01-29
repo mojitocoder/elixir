@@ -1,6 +1,7 @@
 defmodule Grep do
-  def grep(content, options, file) do
-    lines = file
+  def grep(content, options, files) do
+    lines = files
+      |> Enum.map
       |> File.stream!
       |> Enum.with_index
       |> Enum.filter(fn {line, _} -> line |> String.match?(build_regex(content, options)) end)
