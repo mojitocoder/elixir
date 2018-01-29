@@ -24,6 +24,12 @@ defmodule Grep do
     end
   end
 
+  def process_file_names_flag(lines, options) do
+    if contains?(options, "-l") do
+
+    end
+  end
+
   def contains?(enum, val) do
     enum
       |> Enum.filter(fn x -> x == val end)

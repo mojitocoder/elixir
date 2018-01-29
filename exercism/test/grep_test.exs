@@ -73,7 +73,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, print file names flag" do
       assert Grep.grep("Forbidden", ["-l"], ["paradise-lost.txt"]) ==
         """
@@ -81,7 +81,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, match entire lines flag" do
       assert Grep.grep("With loss of Eden, till one greater Man",
                        ["-x"], ["paradise-lost.txt"]) ==
@@ -90,7 +90,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, multiple flags" do
       assert Grep.grep("OF ATREUS, Agamemnon, KIng of MEN.",
                        ["-n", "-i", "-x"], ["iliad.txt"]) ==
