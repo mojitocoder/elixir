@@ -57,7 +57,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, print line numbers flag" do
       assert Grep.grep("Forbidden", ["-n"], ["paradise-lost.txt"]) ==
         """
@@ -65,7 +65,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, case-insensitive flag" do
       assert Grep.grep("FORBIDDEN", ["-i"], ["paradise-lost.txt"]) ==
         """
