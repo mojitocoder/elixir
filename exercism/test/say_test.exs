@@ -6,12 +6,12 @@ defmodule SayTest do
     assert Say.in_english(0) == {:ok, "zero"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "one" do
     assert Say.in_english(1) == {:ok, "one"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "fourteen" do
     assert Say.in_english(14) == {:ok, "fourteen"}
   end
@@ -66,12 +66,12 @@ defmodule SayTest do
     assert Say.in_english(987_654_321_123) == {:ok, "nine hundred eighty-seven billion six hundred fifty-four million three hundred twenty-one thousand one hundred twenty-three"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "numbers below zero are out of range" do
     assert Say.in_english(-1) == {:error, "number is out of range"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "numbers above 999,999,999,999 are out of range" do
     assert Say.in_english(1_000_000_000_000) == {:error, "number is out of range"}
   end
