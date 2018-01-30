@@ -1,19 +1,35 @@
 defmodule Grep do
   def grep(content, options, files) do
-    files
-      |> Enum.flat_map(fn file -> grep_one_file(content, options, file) end)
+    if Enum.count(files) == 1 do
+      grep_one_file(content, options, List.first(files))
       |> Enum.join("")
+    else
+      files
+      |> Enum.flat_map(fn file ->
+        grep_one_file(content, options, file)
+        |> process_file_names_flag_for_multi_files(options, file)
+      end)
+      |> Enum.join("")
+    end
+  end
+
+  def process_file_names_flag_for_multi_files(lines, options, file) do
+    if contains?(options, "-l") do
+      lines
+    else
+      lines |> Enum.map(fn line -> "#{file}:#{line}" end)
+    end
   end
 
   def grep_one_file(content, options, file) do
     file
-      |> File.stream!
-      |> Enum.with_index
-      |> Enum.filter(fn {line, _} ->
-        build_filter(line, build_regex(content, options), options)
-      end)
-      |> process_line_numbers_flag(options)
-      |> process_file_names_flag(options, file)
+    |> File.stream!()
+    |> Enum.with_index()
+    |> Enum.filter(fn {line, _} ->
+      build_filter(line, build_regex(content, options), options)
+    end)
+    |> process_line_numbers_flag(options)
+    |> process_file_names_flag(options, file)
   end
 
   def build_filter(line, regex, options) do
@@ -27,11 +43,13 @@ defmodule Grep do
   def build_regex(content, options) do
     regex_option = if contains?(options, "-i"), do: "i", else: ""
 
-    {:ok, regex} = if contains?(options, "-x") do
-                     Regex.compile("^#{content}$", regex_option)
-                   else
-                     Regex.compile("#{content}", regex_option)
-                   end
+    {:ok, regex} =
+      if contains?(options, "-x") do
+        Regex.compile("^#{content}$", regex_option)
+      else
+        Regex.compile("#{content}", regex_option)
+      end
+
     regex
   end
 
@@ -53,8 +71,7 @@ defmodule Grep do
 
   def contains?(enum, val) do
     enum
-      |> Enum.filter(fn x -> x == val end)
-      |> Enum.count
-      >= 1
+    |> Enum.filter(fn x -> x == val end)
+    |> Enum.count() >= 1
   end
 end

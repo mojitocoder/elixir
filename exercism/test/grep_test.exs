@@ -153,7 +153,7 @@ defmodule GrepTest do
 
   describe "grepping multiples files at once" do
 
-    @tag :pending
+    # @tag :pending
     test "one match, no flags" do
       assert Grep.grep("Agamemnon", [],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -162,7 +162,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, no flags" do
       assert Grep.grep("may", [],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -173,7 +173,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, print line numbers flag" do
       assert Grep.grep("that", ["-n"],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -185,7 +185,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, print file names flag" do
       assert Grep.grep("who", ["-l"],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -195,7 +195,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, case-insensitive flag" do
       assert Grep.grep("TO", ["-i"],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -213,7 +213,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, inverted flag" do
       assert Grep.grep("a", ["-v"],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -224,7 +224,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, match entire lines flag" do
       assert Grep.grep("But I beseech your grace that I may know", ["-x"],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) ==
@@ -233,7 +233,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "one match, multiple flags" do
       assert Grep.grep("WITH LOSS OF EDEN, TILL ONE GREATER MAN",
         ["-n", "-x", "-i"],
@@ -243,7 +243,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "no matches, various flags" do
       assert Grep.grep("Frodo", ["-n", "-l", "-x", "i"],
         ["iliad.txt", "midsummer-night.txt", "paradise-lost.txt"]) == ""
