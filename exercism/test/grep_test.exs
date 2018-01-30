@@ -99,7 +99,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, no flags" do
       assert Grep.grep("may", [], ["midsummer-night.txt"]) ==
         """
@@ -109,7 +109,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, print line numbers flag" do
       assert Grep.grep("may", ["-n"], ["midsummer-night.txt"]) ==
         """
@@ -119,12 +119,12 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, match entire lines flag" do
       assert Grep.grep("may", ["-x"], ["midsummer-night.txt"]) == ""
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, case-insensitive flag" do
       assert Grep.grep("ACHILLES", ["-i"], ["iliad.txt"]) ==
         """
@@ -133,7 +133,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "several matches, inverted flag" do
       assert Grep.grep("Of", ["-v"], ["paradise-lost.txt"]) ==
         """
@@ -145,7 +145,7 @@ defmodule GrepTest do
         """
     end
 
-    @tag :pending
+    # @tag :pending
     test "no matches, various flags" do
       assert Grep.grep("Gandalf", ["-n", "-l", "-x", "-i"], ["iliad.txt"]) == ""
     end

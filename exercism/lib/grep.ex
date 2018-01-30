@@ -1,20 +1,38 @@
 defmodule Grep do
   def grep(content, options, files) do
-    lines = files
-      |> Enum.map
+    files
+      |> Enum.flat_map(fn file -> grep_one_file(content, options, file) end)
+      |> Enum.join("")
+  end
+
+  def grep_one_file(content, options, file) do
+    file
       |> File.stream!
       |> Enum.with_index
-      |> Enum.filter(fn {line, _} -> line |> String.match?(build_regex(content, options)) end)
+      |> Enum.filter(fn {line, _} ->
+        build_filter(line, build_regex(content, options), options)
+      end)
       |> process_line_numbers_flag(options)
-      |> Enum.join("\n")
+      |> process_file_names_flag(options, file)
+  end
+
+  def build_filter(line, regex, options) do
+    if contains?(options, "-v") do
+      !String.match?(line, regex)
+    else
+      String.match?(line, regex)
+    end
   end
 
   def build_regex(content, options) do
-    if contains?(options, "-i") do
-      ~r/#{content}/i
-    else
-      ~r/#{content}/
-    end
+    regex_option = if contains?(options, "-i"), do: "i", else: ""
+
+    {:ok, regex} = if contains?(options, "-x") do
+                     Regex.compile("^#{content}$", regex_option)
+                   else
+                     Regex.compile("#{content}", regex_option)
+                   end
+    regex
   end
 
   def process_line_numbers_flag(lines, options) do
@@ -25,9 +43,11 @@ defmodule Grep do
     end
   end
 
-  def process_file_names_flag(lines, options) do
-    if contains?(options, "-l") do
-
+  def process_file_names_flag(lines, options, file) do
+    if contains?(options, "-l") && Enum.count(lines) > 0 do
+      ["#{file}\n"]
+    else
+      lines
     end
   end
 
