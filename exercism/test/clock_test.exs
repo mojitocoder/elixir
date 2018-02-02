@@ -4,7 +4,7 @@ defmodule ClockTest do
   @tag :pending
   test "to_string" do
     try do
-      # to_string(%Clock{})
+      to_string(%Clock{})
     rescue
       Protocol.UndefinedError ->
         refute(true, """
@@ -17,62 +17,62 @@ defmodule ClockTest do
   end
 
   describe "create" do
-    @tag :pending
+    # @tag :pending
     test "on the hour" do
       assert Clock.new(8, 0) |> to_string == "08:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "past the hour" do
       assert Clock.new(11, 9) |> to_string == "11:09"
     end
 
-    @tag :pending
+    # @tag :pending
     test "midnight is zero hours" do
       assert Clock.new(24, 0) |> to_string == "00:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "hour rolls over" do
       assert Clock.new(25, 0) |> to_string == "01:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "hour rolls over continuously" do
       assert Clock.new(100, 0) |> to_string == "04:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "sixty minutes is next hour" do
       assert Clock.new(1, 60) |> to_string == "02:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "minutes roll over" do
       assert Clock.new(0, 160) |> to_string == "02:40"
     end
 
-    @tag :pending
+    # @tag :pending
     test "minutes roll over continuously" do
       assert Clock.new(0, 1723) |> to_string == "04:43"
     end
 
-    @tag :pending
+    # @tag :pending
     test "hour and minutes roll over" do
       assert Clock.new(25, 160) |> to_string == "03:40"
     end
 
-    @tag :pending
+    # @tag :pending
     test "hour and minutes roll over continuously" do
       assert Clock.new(201, 3001) |> to_string == "11:01"
     end
 
-    @tag :pending
+    # @tag :pending
     test "hour and minutes roll over to exactly midnight" do
       assert Clock.new(72, 8640) |> to_string == "00:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative hour" do
       assert Clock.new(-1, 15) |> to_string == "23:15"
     end
