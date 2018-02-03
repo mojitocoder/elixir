@@ -114,82 +114,82 @@ defmodule ClockTest do
   end
 
   describe "add" do
-    @tag :pending
+    # @tag :pending
     test "add minutes" do
       assert Clock.new(10, 0) |> Clock.add(3) |> to_string == "10:03"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add no minutes" do
       assert Clock.new(6, 41) |> Clock.add(0) |> to_string == "06:41"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add to next hour" do
       assert Clock.new(0, 45) |> Clock.add(40) |> to_string == "01:25"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add more than one hour" do
       assert Clock.new(10, 0) |> Clock.add(61) |> to_string == "11:01"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add more than two hours with carry" do
       assert Clock.new(0, 45) |> Clock.add(160) |> to_string == "03:25"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add across midnight" do
       assert Clock.new(23, 59) |> Clock.add(2) |> to_string == "00:01"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add more than one day (1500 min = 25 hrs)" do
       assert Clock.new(5, 32) |> Clock.add(1500) |> to_string == "06:32"
     end
 
-    @tag :pending
+    # @tag :pending
     test "add more than two days" do
       assert Clock.new(1, 1) |> Clock.add(3500) |> to_string == "11:21"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract minutes" do
       assert Clock.new(10, 3) |> Clock.add(-3) |> to_string == "10:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract to previous hour" do
       assert Clock.new(10, 3) |> Clock.add(-30) |> to_string == "09:33"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract more than an hour" do
       assert Clock.new(10, 3) |> Clock.add(-70) |> to_string == "08:53"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract across midnight" do
       assert Clock.new(0, 3) |> Clock.add(-4) |> to_string == "23:59"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract more than two hours" do
       assert Clock.new(0, 0) |> Clock.add(-160) |> to_string == "21:20"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract more than two hours with borrow" do
       assert Clock.new(6, 15) |> Clock.add(-160) |> to_string == "03:35"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract more than one day (1500 min = 25 hrs)" do
       assert Clock.new(5, 32) |> Clock.add(-1500) |> to_string == "04:32"
     end
 
-    @tag :pending
+    # @tag :pending
     test "subtract more than two days" do
       assert Clock.new(2, 20) |> Clock.add(-3000) |> to_string == "00:20"
     end

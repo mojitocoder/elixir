@@ -11,6 +11,10 @@ defmodule Clock do
     }
   end
 
+  def add(%Clock{} = clock, m) do
+    Clock.new(clock.hour, clock.minute + m)
+  end
+
   defp rollover_hour(h) do
     cond do
       h < 0 ->
