@@ -77,37 +77,37 @@ defmodule ClockTest do
       assert Clock.new(-1, 15) |> to_string == "23:15"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative hour rolls over" do
       assert Clock.new(-25, 0) |> to_string == "23:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative hour rolls over continuously" do
       assert Clock.new(-91, 0) |> to_string == "05:00"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative minutes" do
       assert Clock.new(1, -40) |> to_string == "00:20"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative minutes roll over" do
       assert Clock.new(1, -160) |> to_string == "22:20"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative minutes roll over continuously" do
       assert Clock.new(1, -4820) |> to_string == "16:40"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative hour and minutes roll over" do
       assert Clock.new(-25, -160) |> to_string == "20:20"
     end
 
-    @tag :pending
+    # @tag :pending
     test "negative hour and minutes roll over continuously" do
       assert Clock.new(-121, -5810) |> to_string == "22:10"
     end

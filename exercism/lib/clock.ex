@@ -2,10 +2,33 @@ defmodule Clock do
   defstruct [:hour, :minute]
 
   def new(h, m) do
+    {min, spare_hours} = rollover_minute(m)
+    hour = rollover_hour(h + spare_hours)
+
     %Clock{
-      hour: rem(div(m, 60) + h, 24),
-      minute: rem(m, 60)
+      hour: hour,
+      minute: min
     }
+  end
+
+  defp rollover_hour(h) do
+    cond do
+      h < 0 ->
+        abs(round(Float.floor(h / 24))) * 24 + h
+
+      true ->
+        rem(h, 24)
+    end
+  end
+
+  defp rollover_minute(m) do
+    cond do
+      m < 0 ->
+        {abs(round(Float.floor(m / 60))) * 60 + m, round(Float.floor(m / 60))}
+
+      true ->
+        {rem(m, 60), div(m, 60)}
+    end
   end
 end
 
