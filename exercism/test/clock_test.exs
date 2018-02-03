@@ -1,7 +1,7 @@
 defmodule ClockTest do
   use ExUnit.Case
 
-  @tag :pending
+  # @tag :pending
   test "to_string" do
     try do
       to_string(%Clock{})
@@ -196,77 +196,77 @@ defmodule ClockTest do
   end
 
   describe "==" do
-    @tag :pending
+    # @tag :pending
     test "clocks with same time" do
       assert Clock.new(15, 37) == Clock.new(15, 37)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks a minute apart" do
       refute Clock.new(15, 36) == Clock.new(15, 37)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks an hour apart" do
       refute Clock.new(14, 37) == Clock.new(15, 37)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with hour overflow" do
       assert Clock.new(10, 37) == Clock.new(34, 37)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with hour overflow by several days" do
       assert Clock.new(3, 11) == Clock.new(99, 11)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative hour" do
       assert Clock.new(22, 40) == Clock.new(-2, 40)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative hour that wraps" do
       assert Clock.new(17, 3) == Clock.new(-31, 3)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative hour that wraps multiple times" do
       assert Clock.new(13, 49) == Clock.new(-83, 49)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with minute overflow" do
       assert Clock.new(0, 1) == Clock.new(0, 1441)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with minute overflow by several days" do
       assert Clock.new(2, 2) == Clock.new(2, 4322)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative minute" do
       assert Clock.new(2, 40) == Clock.new(3, -20)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative minute that wraps" do
       assert Clock.new(4, 10) == Clock.new(5, -1490)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative minute that wraps multiple times" do
       assert Clock.new(6, 15) == Clock.new(6, -4305)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative hours and minutes" do
       assert Clock.new(7, 32) == Clock.new(-12, -268)
     end
 
-    @tag :pending
+    # @tag :pending
     test "clocks with negative hours and minutes that wrap" do
       assert Clock.new(18, 7) == Clock.new(-54, -11513)
     end
