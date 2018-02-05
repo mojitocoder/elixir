@@ -109,7 +109,7 @@ defmodule ForthTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "defining a new word" do
     s = Forth.new
         |> Forth.eval(": dup-twice dup dup ;")

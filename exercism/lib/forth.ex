@@ -37,7 +37,7 @@ defmodule Forth.StackUnderflow do
 end
 
 defmodule Forth do
-  defstruct [:stack]
+  defstruct [:stack, :commands]
 
   def new do
     %Forth{stack: Stack.new()}
@@ -48,6 +48,8 @@ defmodule Forth do
   end
 
   def eval(%Forth{} = forth, exp) do
+    # lines = cleanse(exp) |> String.split(";", trim: true)
+
     new_stack =
       cleanse(exp)
       |> String.split(" ")
