@@ -2,3 +2,5 @@
 *.beam
 
 exercism/.elixir_ls/dialyzer_manifest_20.0.4_elixir-1.5.1_test
+
+the-little-elixir-otp-guidebook-code/
