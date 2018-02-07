@@ -70,6 +70,7 @@ defmodule Forth do
   def eval(%Forth{} = forth, exp) do
     cleanse(exp)
     |> String.split(";", trim: true)
+    |> Enum.map(fn line -> String.trim(line) end)
     |> Enum.reduce(forth, fn line, acc ->
       case String.slice(line, 0, 1) do
         ":" -> eval_commands(acc, line)
@@ -210,7 +211,7 @@ defmodule Forth do
     s
     |> String.to_charlist()
     |> Enum.map(fn c ->
-      if c in 32..126, do: c, else: 32
+      if c in 32..126 || c == 8364, do: c, else: 32
     end)
     |> List.to_string()
   end
