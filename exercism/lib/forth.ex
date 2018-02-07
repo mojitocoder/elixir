@@ -40,7 +40,19 @@ defmodule Forth do
   defstruct [:stack, :commands]
 
   def new do
-    %Forth{stack: Stack.new()}
+    new(Stack.new())
+  end
+
+  def new(%Stack{} = stack) do
+    %Forth{stack: stack, commands: Map.new()}
+  end
+
+  def replace_stack(%Forth{} = forth, %Stack{} = stack) do
+    %Forth{stack: stack, commands: forth.commands}
+  end
+
+  def replace_commands(%Forth{} = forth, commands) do
+    %Forth{stack: forth.stack, commands: commands}
   end
 
   def format_stack(%Forth{} = forth) do
@@ -48,14 +60,32 @@ defmodule Forth do
   end
 
   def eval(%Forth{} = forth, exp) do
-    # lines = cleanse(exp) |> String.split(";", trim: true)
+    cleanse(exp)
+    |> String.split(";", trim: true)
+    |> Enum.reduce(forth, fn line, acc ->
+      case String.slice(line, 0, 1) do
+        ":" -> eval_commands(acc, line)
+        _ -> eval_stack(acc, line)
+      end
+    end)
+  end
 
-    new_stack =
-      cleanse(exp)
+  defp eval_commands(%Forth{} = forth, exp) do
+    parts = exp |> String.split(" ", trim: true)
+    key = parts |> Enum.slice(1, 1) |> List.first()
+    val = parts |> Enum.slice(2, Enum.count(parts) - 2)
+
+    commands = Map.put(forth.commands, key, val)
+    forth |> Forth.replace_commands(commands)
+  end
+
+  defp eval_stack(%Forth{} = forth, exp) do
+    stack =
+      exp
       |> String.split(" ")
       |> Enum.reduce(forth.stack, fn val, stack -> process(stack, val) end)
 
-    %Forth{stack: new_stack}
+    forth |> Forth.replace_stack(stack)
   end
 
   defp process(%Stack{} = stack, val) do
@@ -77,6 +107,10 @@ defmodule Forth do
 
       String.upcase(val) == "OVER" ->
         do_over(stack)
+
+      stack.commands[val] != nil ->
+        stack.commands[val]
+        |> Enum.reduce(stack, fn v, st -> process(st, v) end)
 
       true ->
         Stack.push(stack, val)
