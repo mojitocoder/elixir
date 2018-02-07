@@ -36,6 +36,14 @@ defmodule Forth.StackUnderflow do
   defexception message: "StackUnderflow"
 end
 
+defmodule Forth.InvalidWord do
+  defexception message: "Invalid word"
+end
+
+defmodule Forth.UnknownWord do
+  defexception message: "Unknown word"
+end
+
 defmodule Forth do
   defstruct [:stack, :commands]
 
@@ -75,26 +83,34 @@ defmodule Forth do
     key = parts |> Enum.slice(1, 1) |> List.first()
     val = parts |> Enum.slice(2, Enum.count(parts) - 2)
 
-    commands = Map.put(forth.commands, key, val)
-    forth |> Forth.replace_commands(commands)
+    if is_int(key) do
+      raise Forth.InvalidWord
+    else
+      commands = Map.put(forth.commands, key, val)
+      forth |> Forth.replace_commands(commands)
+    end
   end
 
   defp eval_stack(%Forth{} = forth, exp) do
     stack =
       exp
       |> String.split(" ")
-      |> Enum.reduce(forth.stack, fn val, stack -> process(stack, val) end)
+      |> Enum.reduce(forth.stack, fn val, st -> eval_value(st, forth.commands, val) end)
 
-    forth |> Forth.replace_stack(stack)
+    forth |> replace_stack(stack)
   end
 
-  defp process(%Stack{} = stack, val) do
+  defp eval_value(%Stack{} = stack, commands, val) do
     cond do
       is_int(val) ->
         Stack.push(stack, to_int(val))
 
       val in ["+", "-", "*", "/"] ->
         do_arithmetic(stack, String.to_atom(val))
+
+      commands[val] != nil ->
+        commands[val]
+        |> Enum.reduce(stack, fn v, st -> eval_value(st, commands, v) end)
 
       String.upcase(val) == "DUP" ->
         do_dup(stack)
@@ -108,12 +124,8 @@ defmodule Forth do
       String.upcase(val) == "OVER" ->
         do_over(stack)
 
-      stack.commands[val] != nil ->
-        stack.commands[val]
-        |> Enum.reduce(stack, fn v, st -> process(st, v) end)
-
       true ->
-        Stack.push(stack, val)
+        raise Forth.UnknownWord
     end
   end
 
@@ -194,7 +206,7 @@ defmodule Forth do
     Integer.parse(s) |> elem(0)
   end
 
-  defp cleanse(s) do
+  def cleanse(s) do
     s
     |> String.to_charlist()
     |> Enum.map(fn c ->
