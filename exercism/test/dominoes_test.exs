@@ -10,7 +10,7 @@ defmodule DominoesTest do
     assert Dominoes.chain?([{1, 1}]) == true
   end
 
-  @tag :pending
+  # @tag :pending
   test "singleton that can't be chained" do
     assert Dominoes.chain?([{1, 2}]) == false
   end
