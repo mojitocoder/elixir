@@ -45,28 +45,28 @@ defmodule DominoesTest do
     assert Dominoes.chain?([{1, 2}, {2, 3}, {3, 1}, {2, 4}, {2, 4}]) == true # a variation in which we have to turn but no duplicates
   end
 
-  @tag :pending
+  # @tag :pending
   test "separate loops" do
     assert Dominoes.chain?([{1, 2}, {2, 3}, {3, 1}, {1, 1}, {2, 2}, {3, 3}]) == true
   end
 
-  @tag :pending
+  # @tag :pending
   test "nine elements" do
     assert Dominoes.chain?([{1, 2}, {5, 3}, {3, 1}, {1, 2}, {2, 4}, {1, 6}, {2, 3}, {3, 4}, {5, 6}]) == true
  end
 
 
-  @tag :pending
+  # @tag :pending
   test "disconnected - simple" do
     refute Dominoes.chain?([{1, 1}, {2, 2}])
   end
 
-  @tag :pending
+  # @tag :pending
   test "first and last not matching" do
     assert Dominoes.chain?([{1, 2}, {2, 3}, {3, 4}]) == false
   end
 
-  @tag :pending
+  # @tag :pending
   test "wrong starting order" do
     assert Dominoes.chain?([{2, 1}, {2, 3}, {3, 1}]) == true
   end
