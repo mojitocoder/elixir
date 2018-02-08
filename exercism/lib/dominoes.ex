@@ -57,16 +57,24 @@ defmodule Dominoes do
   def chain?([]), do: true
 
   def chain?(dominoes) do
-    false
+    case line?(dominoes) do
+      {:ok, line} ->
+        line.head == line.tail
+
+      _ ->
+        false
+    end
   end
 
   def line?(sequence) do
     line =
       sequence
-      |> Enum.reduce_while(L.new(), fn i, acc ->
-        L.append(acc, i)
-      end)
+      |> Enum.reduce_while(L.new(), fn i, acc -> L.append(acc, i) end)
 
-    line.length == Enum.count(sequence)
+    if line.length == Enum.count(sequence) do
+      {:ok, line}
+    else
+      {:error}
+    end
   end
 end

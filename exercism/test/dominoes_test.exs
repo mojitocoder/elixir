@@ -5,7 +5,7 @@ defmodule DominoesTest do
     assert Dominoes.chain?([]) == true
   end
 
-  @tag :pending
+  # @tag :pending
   test "singleton input = singleton output" do
     assert Dominoes.chain?([{1, 1}]) == true
   end
@@ -15,32 +15,32 @@ defmodule DominoesTest do
     assert Dominoes.chain?([{1, 2}]) == false
   end
 
-  @tag :pending
+  # @tag :pending
   test "three elements" do
     assert Dominoes.chain?([{1, 2}, {3, 1}, {2, 3}]) == true
   end
 
-  @tag :pending
+  # @tag :pending
   test "can reverse dominoes" do
     assert Dominoes.chain?([{1, 2}, {1, 3}, {2, 3}]) == true
   end
 
-  @tag :pending
+  # @tag :pending
   test "can't be chained" do
     assert Dominoes.chain?([{1, 2}, {4, 1}, {2, 3}]) == false
   end
 
-  @tag :pending
+  # @tag :pending
   test "disconnected - double loop" do
     assert Dominoes.chain?([{1, 2}, {2, 1}, {3, 4}, {4, 3}]) == false
   end
 
-  @tag :pending
+  # @tag :pending
   test "disconnected - single isolated" do
     assert Dominoes.chain?([{1, 2}, {2, 3}, {3, 1}, {4, 4}]) == false
   end
 
-  @tag :pending
+  # @tag :pending
   test "need backtrack" do
     assert Dominoes.chain?([{1, 2}, {2, 3}, {3, 1}, {2, 4}, {2, 4}]) == true # a variation in which we have to turn but no duplicates
   end
