@@ -57,9 +57,19 @@ defmodule Dominoes do
   def chain?([]), do: true
 
   def chain?(dominoes) do
-    length = Enum.count(dominoes)
+    # sequence_is_chain?(dominoes)
+    dominoes
+    |> permutate_array
+    |> Enum.filter(fn permutation -> sequence_is_chain?(permutation) end)
+    |> Enum.count > 0
+  end
 
-    sequence_is_chain?(dominoes)
+  def permutate_array(a) do
+    length = Enum.count(a)
+    permutate(length - 1)
+    |> Enum.map(fn permutation ->
+      permutation |> Enum.map(fn i -> a |> Enum.at(i) end)
+    end)
   end
 
   def permutate(0), do: [[0]]
