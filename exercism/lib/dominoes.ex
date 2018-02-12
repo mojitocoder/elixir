@@ -57,6 +57,26 @@ defmodule Dominoes do
   def chain?([]), do: true
 
   def chain?(dominoes) do
+    length = Enum.count(dominoes)
+
+    sequence_is_chain?(dominoes)
+  end
+
+  def permutate(0), do: [[0]]
+  def permutate(n) do
+    permutate(n-1)
+    |> Enum.map(fn x -> permutate(x, n) end)
+    |> Enum.reduce([], fn x, acc -> Enum.concat(x, acc) end)
+  end
+
+  def permutate(list, val) do
+    0..Enum.count(list)
+    |> Enum.map(fn i ->
+      list |> List.insert_at(i, val)
+    end)
+  end
+
+  def sequence_is_chain?(dominoes) do
     case line?(dominoes) do
       {:ok, line} ->
         line.head == line.tail
