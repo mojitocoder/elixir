@@ -138,3 +138,4 @@ Elixir support the following data types:
 + Elixir version: `elixir -v`
 + `asdf` for version manager:
    + 	​
+   + 	​
