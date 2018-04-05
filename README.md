@@ -44,10 +44,7 @@ Elixir
 + `mix escript.build` to generate the command line
 
 
-## Phoenix
-+ Install the latest version of Phoenix: `mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez`
-+ `mix phx.new` to create a new project, e.g. `mix phx.new conduit --module Conduit --app conduit --no-brunch --no-html`
-+ `mix phx.server` to run the Phoenix webserver, default URL: `http://localhost:4000/`
++ ​
 
 ## Postgres
 + Start the service: `pg_ctl -D /usr/local/var/postgres start`
@@ -125,3 +122,19 @@ Elixir support the following data types:
 ## Plan
 + `Blitzy` command-line program
 + `Registry` for message dispatching & pub/sub
+
+
+## Phoenix
+
+- Install the latest version of Phoenix: `mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez`
+- `mix phx.new` to create a new project, e.g. `mix phx.new conduit --module Conduit --app conduit --no-brunch --no-html`
+- `mix phx.server` to run the Phoenix webserver, default URL: `http://localhost:4000/`
+- `mix phx.routes` to show the defined routes in the application
+
+
+##Dev Environment
+
++ Erlang version: `erl -eval 'erlang:display(erlang:system_info(otp_release)), halt().'  -noshell`
++ Elixir version: `elixir -v`
++ `asdf` for version manager:
+   + 	​
